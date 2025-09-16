@@ -12,5 +12,6 @@ These plugins are meant as a demo and proof-of-concept. They do not aim to be co
 | Player Counter         | Adds a simple player counter to the console. Uses a GameQ fork.                                                       | Yes      |
 | Pterodactyl Theme      | Simple "Theme" with Pterodactyl like colors and font.                                                                 | Yes      |
 | Register               | Enables registration on all panels.                                                                                   | Yes      |
+| Robo Avatars           | Adds RoboHash as avatar provider                                                                                      | Yes      |
 | Tickets                | Allows users to create tickets (per server) and admins to answer them.                                                | Yes      |
 | User Creatable Servers | Allows admins to assign resources to users. User can then create server themselves.                                   | Yes      |
