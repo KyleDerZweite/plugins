@@ -1,0 +1,18 @@
+{
+    "id": "legal-pages",
+    "name": "Legal Pages",
+    "author": "Boy132",
+    "version": "1.0.0",
+    "description": "Adds some legal pages (like an Imprint) to the panel",
+    "category": "plugin",
+    "url": "https://github.com/pelican-dev/plugins/tree/main/legal-pages",
+    "update_url": null,
+    "namespace": "Boy132\\LegalPages",
+    "class": "LegalPagesPlugin",
+    "panels": [
+        "admin",
+        "app"
+    ],
+    "panel_version": null,
+    "composer_packages": null
+}
