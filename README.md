@@ -14,7 +14,7 @@ Download the plugin folders you want to install and use the `Import` button on t
 Very simple announcements via AlertBanners.
 
 > [!WARNING]
-> Alert banners are currently bugged. See https://github.com/pelican-dev/panel/issues/1492
+> Alert banners are currently bugged. See <https://github.com/pelican-dev/panel/issues/1492>
 
 ---
 
@@ -87,6 +87,15 @@ Adds [RoboHash](https://robohash.org/) as avatar provider.
 ### [Snowflakes](/snowflakes) <sup><sub>by Boy132</sub></sup>
 
 Adds simple CSS snowflakes to all panels.
+
+---
+
+### [Subdomains](/subdomains) <sup><sub>by Boy132</sub></sup>
+
+Allows users to create subdomains (on cloudflare) for their servers.
+
+> [!CAUTION]
+> This plugin is incomplete!
 
 ---
 

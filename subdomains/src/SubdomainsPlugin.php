@@ -1,0 +1,65 @@
+<?php
+
+namespace Boy132\Subdomains;
+
+use App\Contracts\Plugins\HasPluginSettings;
+use App\Models\Server;
+use App\Traits\EnvironmentWriterTrait;
+use Boy132\Subdomains\Models\Subdomain;
+use Filament\Contracts\Plugin;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
+use Filament\Panel;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class SubdomainsPlugin implements HasPluginSettings, Plugin
+{
+    use EnvironmentWriterTrait;
+
+    public function getId(): string
+    {
+        return 'subdomains';
+    }
+
+    public function register(Panel $panel): void
+    {
+        $id = str($panel->getId())->title();
+
+        $panel->discoverResources(plugin_path($this->getId(), "src/Filament/$id/Resources"), "Boy132\\Subdomains\\Filament\\$id\\Resources");
+        $panel->discoverPages(plugin_path($this->getId(), "src/Filament/$id/Pages"), "Boy132\\Subdomains\\Filament\\$id\\Pages");
+    }
+
+    public function boot(Panel $panel): void {}
+
+    public function getSettingsForm(): array
+    {
+        return [
+            TextInput::make('email')
+                ->label('Cloudflare E-Mail')
+                ->required()
+                ->default(fn () => config('subdomains.email')),
+            TextInput::make('key')
+                ->label('Cloudflare API Key')
+                ->required()
+                ->default(fn () => config('subdomains.key')),
+        ];
+    }
+
+    public function saveSettings(array $data): void
+    {
+        $this->writeToEnvironment([
+            'CLOUDFLARE_EMAIL' => $data['email'],
+            'CLOUDFLARE_KEY' => $data['key'],
+        ]);
+
+        Notification::make()
+            ->title('Settings saved')
+            ->success()
+            ->send();
+    }
+
+    public static function getSubdomains(Server $server): HasMany
+    {
+        return $server->hasMany(Subdomain::class);
+    }
+}
