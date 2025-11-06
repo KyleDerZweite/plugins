@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'current_language_name' => 'English (Pirate)',
+
     'title' => 'Captain\'s Log',
     'tabs' => [
         'account' => 'Account',
