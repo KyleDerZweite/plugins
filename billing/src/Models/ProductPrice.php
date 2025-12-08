@@ -66,7 +66,7 @@ class ProductPrice extends Model
                 'currency' => config('billing.currency'),
                 'nickname' => $this->name,
                 'product' => $this->product->stripe_id,
-                'unit_amount' => $this->cost,
+                'unit_amount' => $this->cost * 100, // Stripe needs cent/ penny price
             ]);
 
             $this->updateQuietly([
@@ -76,7 +76,7 @@ class ProductPrice extends Model
             $stripePrice = $stripeClient->prices->retrieve($this->stripe_id);
 
             // You can't update price objects on stripe, so check for changes and recreate the price if needed
-            if ($stripePrice->product !== $this->product->stripe_id || $stripePrice->unit_amount !== $this->cost) {
+            if ($stripePrice->product !== $this->product->stripe_id || $stripePrice->unit_amount !== $this->cost * 100) {
                 $this->stripe_id = null;
                 $this->sync();
             }

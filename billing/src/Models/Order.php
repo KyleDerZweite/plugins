@@ -64,7 +64,7 @@ class Order extends Model
 
     public function checkExpire(): bool
     {
-        if (!is_null($this->expires_at) && now('UTC') >= $this->expires_at) {
+        if ($this->status === OrderStatus::Active && !is_null($this->expires_at) && now('UTC') >= $this->expires_at) {
             try {
                 if ($this->server) {
                     app(SuspensionService::class)->handle($this->server, SuspendAction::Suspend); // @phpstan-ignore myCustomRules.forbiddenGlobalFunctions
@@ -92,7 +92,11 @@ class Order extends Model
             /** @var StripeClient $stripeClient */
             $stripeClient = app(StripeClient::class); // @phpstan-ignore myCustomRules.forbiddenGlobalFunctions
 
-            $stripeClient->checkout->sessions->expire($this->stripe_id);
+            $session = $stripeClient->checkout->sessions->retrieve($this->stripe_id);
+
+            if ($session->status === Session::STATUS_OPEN) {
+                $stripeClient->checkout->sessions->expire($session->id);
+            }
         }
     }
 
@@ -172,7 +176,7 @@ class Order extends Model
         ]);
     }
 
-    private function createServer(): Server
+    public function createServer(): Server
     {
         if ($this->server) {
             return $this->server;
@@ -205,7 +209,7 @@ class Order extends Model
 
         $object = new DeploymentObject();
         $object->setDedicated(false);
-        $object->setTags([]);
+        $object->setTags($product->tags);
         $object->setPorts($product->ports);
 
         $server = app(ServerCreationService::class)->handle($data, $object); // @phpstan-ignore myCustomRules.forbiddenGlobalFunctions

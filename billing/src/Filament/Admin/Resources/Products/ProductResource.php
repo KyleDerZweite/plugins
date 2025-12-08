@@ -39,6 +39,7 @@ class ProductResource extends Resource
                 TextInput::make('name')
                     ->required(),
                 Textarea::make('description')
+                    ->required()
                     ->autosize(),
                 Fieldset::make('Server')
                     ->columnSpanFull()
@@ -86,7 +87,8 @@ class ProductResource extends Resource
                     ->columns(2)
                     ->schema([
                         TagsInput::make('ports'),
-                        TagsInput::make('tags'),
+                        TagsInput::make('tags')
+                            ->default(array_filter(explode(',', config('billing.deployment_tags', '')))),
                     ]),
                 Fieldset::make('Limits')
                     ->columnSpanFull()

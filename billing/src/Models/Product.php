@@ -13,7 +13,7 @@ use Stripe\StripeClient;
  * @property int $id
  * @property ?string $stripe_id
  * @property string $name
- * @property ?string $description
+ * @property string $description
  * @property int $cpu
  * @property int $memory
  * @property int $disk

@@ -13,7 +13,7 @@ return new class extends Migration
             $table->id();
             $table->string('stripe_id')->nullable();
             $table->string('name');
-            $table->text('description')->nullable();
+            $table->text('description');
             $table->unsignedInteger('cpu')->default(0);
             $table->unsignedInteger('memory')->default(0);
             $table->unsignedInteger('disk')->default(0);

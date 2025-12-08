@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('expires_at')->nullable();
             $table->foreignIdFor(Customer::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(ProductPrice::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Server::class)->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Server::class)->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }

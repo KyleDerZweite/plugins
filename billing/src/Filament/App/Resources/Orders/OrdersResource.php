@@ -27,6 +27,9 @@ class OrdersResource extends Resource
         /** @var Customer $customer */
         $customer = Customer::firstOrCreate([
             'user_id' => user()->id,
+        ], [
+            'first_name' => user()->username,
+            'last_name' => user()->username,
         ]);
 
         return parent::getEloquentQuery()->where('customer_id', $customer->id);

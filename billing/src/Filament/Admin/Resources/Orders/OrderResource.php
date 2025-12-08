@@ -9,7 +9,9 @@ use Boy132\Billing\Filament\Admin\Resources\Customers\Pages\EditCustomer;
 use Boy132\Billing\Filament\Admin\Resources\Orders\Pages\ListOrders;
 use Boy132\Billing\Filament\Admin\Resources\Products\Pages\EditProduct;
 use Boy132\Billing\Models\Order;
+use Exception;
 use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -73,12 +75,44 @@ class OrderResource extends Resource
                     ->visible(fn (Order $order) => $order->status !== OrderStatus::Active)
                     ->color('success')
                     ->requiresConfirmation()
-                    ->action(fn (Order $order) => $order->activate()),
+                    ->action(function (Order $order) {
+                        $order->activate();
+
+                        Notification::make()
+                            ->title('Order activated')
+                            ->body("Order #{$order->id}")
+                            ->success()
+                            ->send();
+                    }),
+                Action::make('create_server')
+                    ->visible(fn (Order $order) => $order->status === OrderStatus::Active && !$order->server)
+                    ->color('primary')
+                    ->requiresConfirmation()
+                    ->action(function (Order $order) {
+                        try {
+                            $order->createServer();
+                        } catch (Exception $exception) {
+                            Notification::make()
+                                ->title('Could not create server')
+                                ->body($exception->getMessage())
+                                ->danger()
+                                ->persistent()
+                                ->send();
+                        }
+                    }),
                 Action::make('close')
                     ->visible(fn (Order $order) => $order->status === OrderStatus::Active)
                     ->color('danger')
                     ->requiresConfirmation()
-                    ->action(fn (Order $order) => $order->close()),
+                    ->action(function (Order $order) {
+                        $order->close();
+
+                        Notification::make()
+                            ->title('Order closed')
+                            ->body("Order #{$order->id}")
+                            ->success()
+                            ->send();
+                    }),
             ])
             ->emptyStateHeading('No Orders')
             ->emptyStateDescription('');

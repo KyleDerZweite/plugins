@@ -9,6 +9,7 @@ use App\Filament\Pages\Auth\EditProfile;
 use App\Traits\EnvironmentWriterTrait;
 use Filament\Contracts\Plugin;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Navigation\NavigationItem;
 use Filament\Notifications\Notification;
@@ -75,6 +76,8 @@ class BillingPlugin implements HasPluginSettings, Plugin
                     'EUR' => 'Euro',
                     'GBP' => 'British Pound',
                 ]),
+            TagsInput::make('deployment_tags')
+                ->label('Default node tags for deployment'),
         ];
     }
 
@@ -84,6 +87,7 @@ class BillingPlugin implements HasPluginSettings, Plugin
             'STRIPE_KEY' => $data['key'],
             'STRIPE_SECRET' => $data['secret'],
             'BILLING_CURRENCY' => $data['currency'],
+            'BILLING_DEPLOYMENT_TAGS' => implode(',', $data['deployment_tags']),
         ]);
 
         Notification::make()

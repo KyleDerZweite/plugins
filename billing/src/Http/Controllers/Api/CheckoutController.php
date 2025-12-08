@@ -9,6 +9,7 @@ use Boy132\Billing\Models\Order;
 use Filament\Facades\Filament;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Stripe\Checkout\Session;
 use Stripe\StripeClient;
 
 class CheckoutController extends Controller
@@ -27,13 +28,19 @@ class CheckoutController extends Controller
 
         $session = $this->stripeClient->checkout->sessions->retrieve($sessionId);
 
-        if ($session->payment_status !== 'paid') {
+        if ($session->payment_status === Session::PAYMENT_STATUS_UNPAID) {
             return redirect(ListOrders::getUrl(panel: 'app'));
         }
 
-        /** @var Order $order */
-        $order = Order::where('stripe_id', $session->id)->firstOrFail();
+        /** @var ?Order $order */
+        $order = Order::where('stripe_id', $session->id)->first();
+
+        if (!$order) {
+            return redirect(ListOrders::getUrl(panel: 'app'));
+        }
+
         $order->activate();
+        $order->refresh();
 
         return redirect(Console::getUrl(panel: 'server', tenant: $order->server));
     }

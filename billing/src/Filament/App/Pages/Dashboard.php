@@ -15,6 +15,10 @@ class Dashboard extends BaseDashboard
         $widgets = [new WidgetConfiguration(WelcomeWidget::class)];
 
         foreach (Product::all() as $product) {
+            if ($product->prices->count() <= 0) {
+                continue;
+            }
+
             $widgets[] = new WidgetConfiguration(ProductWidget::class, ['product' => $product]);
         }
 
