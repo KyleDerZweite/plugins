@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('subdomains', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('name');
             $table->string('record_type')->default('A');
             $table->string('cloudflare_id')->nullable();
