@@ -62,6 +62,18 @@ class Subdomain extends Model implements HasLabel
             throw new Exception('Server has no allocation');
         }
 
+        $response = Http::cloudflare()->get("zones/{$this->domain->cloudflare_id}/dns_records/$this->cloudflare_id", ['search' => $this->name])->json();
+
+        if ($response['success']) {
+            if (!empty($response['result'])) {
+                throw new Exception('A subdomain with that name already exists');
+            }
+        } else {
+            if ($response['errors'] && count($response['errors']) > 0) {
+                throw new Exception($response['errors'][0]['message']);
+            }
+        }
+
         $payload = [
             'name' => $this->name,
             'type' => $this->record_type,
