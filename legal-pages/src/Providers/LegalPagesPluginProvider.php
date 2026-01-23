@@ -3,6 +3,7 @@
 namespace Boy132\LegalPages\Providers;
 
 use App\Enums\CustomRenderHooks;
+use App\Models\Role;
 use Boy132\LegalPages\Enums\LegalPageType;
 use Boy132\LegalPages\LegalPagesPlugin;
 use Filament\Support\Facades\FilamentView;
@@ -13,6 +14,14 @@ class LegalPagesPluginProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        Role::registerCustomPermissions([
+            'legalPage' => [
+                'view',
+                'update',
+            ],
+        ]);
+        Role::registerCustomModelIcon('legalPage', 'tabler-gavel');
+
         $footer = null;
 
         foreach (LegalPageType::cases() as $legalPageType) {
