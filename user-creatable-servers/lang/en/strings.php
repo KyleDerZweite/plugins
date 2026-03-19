@@ -15,6 +15,8 @@ return [
     'left' => 'left',
     'variables' => 'Startup variables',
 
+    'create_server' => 'Create server',
+
     'modals' => [
         'delete_server_confirm' => 'Are you sure you want to delete this server?',
         'delete_server_warning' => 'This action cannot be undone and all data will be permanently lost.',
