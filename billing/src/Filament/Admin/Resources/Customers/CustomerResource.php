@@ -50,7 +50,8 @@ class CustomerResource extends Resource
                     ->required()
                     ->suffix(config('billing.currency'))
                     ->numeric()
-                    ->minValue(0),
+                    ->minValue(0)
+                    ->default(0),
                 TextInput::make('first_name')
                     ->required(),
                 TextInput::make('last_name')

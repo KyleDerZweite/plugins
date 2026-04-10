@@ -21,7 +21,7 @@ class CheckOrdersCommand extends Command
             return 0;
         }
 
-        $bar = $this->output->createProgressBar(count($orders));
+        $bar = $this->output->createProgressBar($orders->count());
         foreach ($orders as $order) {
             $bar->clear();
 
