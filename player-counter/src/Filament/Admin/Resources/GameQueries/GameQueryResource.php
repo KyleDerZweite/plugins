@@ -54,6 +54,10 @@ class GameQueryResource extends Resource
                 TextColumn::make('query_port_offset')
                     ->label(trans('player-counter::query.port_offset'))
                     ->placeholder(trans('player-counter::query.no_offset')),
+                TextColumn::make('query_port_variable')
+                    ->label(trans('player-counter::query.port_variable'))
+                    ->placeholder(trans('player-counter::query.no_variable'))
+                    ->badge(),
                 TextColumn::make('eggs.name')
                     ->label(trans('player-counter::query.eggs'))
                     ->placeholder(trans('player-counter::query.no_eggs'))
@@ -85,14 +89,23 @@ class GameQueryResource extends Resource
                     ->options(fn (QueryTypeService $service) => $service->getMappings())
                     ->selectablePlaceholder(false)
                     ->preload()
-                    ->searchable(),
+                    ->searchable()
+                    ->columnSpanFull(),
                 TextInput::make('query_port_offset')
                     ->label(trans('player-counter::query.port_offset'))
                     ->placeholder(trans('player-counter::query.no_offset'))
                     ->numeric()
                     ->nullable()
                     ->minValue(1)
-                    ->maxValue(65535 - 1024),
+                    ->maxValue(65535 - 1024)
+                    ->hintIcon('tabler-question-mark')
+                    ->hintIconTooltip(trans('player-counter::query.port_offset_hint')),
+                TextInput::make('query_port_variable')
+                    ->label(trans('player-counter::query.port_variable'))
+                    ->placeholder(trans('player-counter::query.no_variable'))
+                    ->nullable()
+                    ->hintIcon('tabler-question-mark')
+                    ->hintIconTooltip(trans('player-counter::query.port_variable_hint')),
                 Select::make('eggs')
                     ->label(trans('admin/mount.eggs'))
                     ->relationship('eggs', 'name')

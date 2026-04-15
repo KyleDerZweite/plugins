@@ -117,7 +117,7 @@ class PlayersPage extends Page implements HasTable
                 $gameQuery = $server->egg->gameQuery; // @phpstan-ignore property.notFound
 
                 if ($gameQuery) {
-                    $data = $gameQuery->runQuery($server->allocation);
+                    $data = $gameQuery->runQuery($server);
 
                     if ($data) {
                         $players = $data['players'] ?? [];
